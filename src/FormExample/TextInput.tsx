@@ -5,15 +5,17 @@ interface TextInputProps {
   errorMessage: string | null;
   id: string;
   type: string;
-  value: string ;
+  value: string;
   label: string;
   handleChange: (value: string) => void;
+  handleBlur: (value: string) => void;
 }
 
 function TextInput({
   error,
   errorMessage,
   handleChange,
+  handleBlur,
   id,
   type,
   value,
@@ -21,7 +23,7 @@ function TextInput({
 }: TextInputProps) {
   return (
     <FormControl>
-      <FormLabel htmlFor="name">{label}</FormLabel>
+      <FormLabel htmlFor={id}>{label}</FormLabel>
       <TextField
         error={error}
         helperText={errorMessage}
@@ -30,10 +32,9 @@ function TextInput({
         name={id}
         value={value}
         onChange={(e) => handleChange(e.target.value)}
-        onBlur={(e) => handleChange(e.target.value.trim())}
-        placeholder="name"
-        autoComplete="name"
-        autoFocus
+        onBlur={(e) => handleBlur(e.target.value.trim())}
+        placeholder={label}
+        autoComplete={id}
         required
         fullWidth
         variant="outlined"

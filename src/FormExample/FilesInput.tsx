@@ -11,25 +11,21 @@ import {
 import { FileDownload, Delete } from "@mui/icons-material";
 
 interface FilesFormProps {
-  handleDrop: (event: React.DragEvent<HTMLDivElement>) => void;
-  handleDragOver: (event: React.DragEvent<HTMLDivElement>) => void;
-  handleDragLeave: (event: React.DragEvent<HTMLDivElement>) => void;
   handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleDeleteFile: (file: File) => void;
   isDragging: boolean;
   files: File[];
   filesError: string | null;
+  acceptedFileTypes: string;
 }
 
 function FilesInput({
-  handleDrop,
-  handleDragOver,
-  handleDragLeave,
   isDragging,
   handleFileChange,
   files,
   filesError,
   handleDeleteFile,
+  acceptedFileTypes,
 }: FilesFormProps) {
   return (
     <>
@@ -40,12 +36,12 @@ function FilesInput({
         Upload your files:
       </Typography>
       <Box
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
         className="dNd-field"
         sx={{
-          backgroundColor: isDragging ? "#f3f9ff" : "#fff",
+          backgroundColor: isDragging ? "action.hover" : "background.paper",
+          borderColor: isDragging ? "primary.main" : "divider",
+          color: "text.primary",
+          transition: "background-color 0.2s ease, border-color 0.2s ease",
         }}
       >
         <Typography
@@ -55,7 +51,13 @@ function FilesInput({
           Release to Upload or
           <Button variant="text" component="label" className="text-btn">
             Browse
-            <input type="file" hidden multiple onChange={handleFileChange} />
+            <input
+              type="file"
+              hidden
+              multiple
+              accept={acceptedFileTypes}
+              onChange={handleFileChange}
+            />
           </Button>
         </Typography>
 
@@ -65,10 +67,10 @@ function FilesInput({
           sx={{
             width: "100%",
             fontSize: "clamp(0.5rem, 10vw, 0.8rem)",
-            color: "#a7a7a7",
+            color: "text.secondary",
           }}
         >
-          Supports: JPEG, JPG, PNG
+          Supports: JPEG, PNG, WEBP
         </Typography>
         {files && files.length > 0 && (
           <List>
